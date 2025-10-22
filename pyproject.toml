@@ -1,0 +1,17 @@
+[project]
+name = "digisiv"
+version = "0.1.0"
+description = "DigiSiV Aufgaben und Lösungen"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numba>=0.62.1",
+  "numpy>=2.3.4",
+  "plotly>=6.3.1",
+  "streamlit>=1.50.0",
+]
+
+[tool.pyright]
+exclude = [".venv", ".devenv/state/venv"]
+venvPath = ".devenv/state/venv"
+venv = "."
