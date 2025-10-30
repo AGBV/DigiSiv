@@ -72,45 +72,13 @@ This repository contains **interactive solutions and exercises** for the German 
 
 **🇩🇪 Deutsch:** Dieses Repository enthält **interaktive Lösungen und Übungen** für den Kurs **"Digitale Signalverarbeitung"**. Alle Lösungen sind in **Python** implementiert und mit **Streamlit** interaktiv gestaltet, sodass Sie die Konzepte der Signalverarbeitung direkt im Browser erkunden können.
 
-### Why This Project? / Warum dieses Projekt?
-
-- 🎓 **Educational Focus**: Learn digital signal processing through hands-on, interactive examples
-- 🌐 **Browser-Based**: No complex setup - everything runs in your web browser
-- 🔬 **Real-Time Exploration**: Adjust parameters and see immediate visual feedback
-- 📊 **Rich Visualizations**: Understanding complex concepts through clear plots and animations
-- 🚀 **Performance Optimized**: Fast computations using scientific Python libraries
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
-
-This project leverages powerful Python libraries for scientific computing and web applications:
 
 [![Python][Python.org]][Python-url]
 [![NumPy][NumPy.org]][NumPy-url]
 [![Streamlit][Streamlit.io]][Streamlit-url]
 [![Plotly][Plotly.com]][Plotly-url]
 [![Numba][Numba.org]][Numba-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Features
-
-- 🎯 **Interactive Exercises**: Hands-on signal processing exercises with real-time parameter adjustment
-- 📊 **Visual Learning**: Rich visualizations using Plotly for better understanding
-- 🚀 **Performance Optimized**: Uses Numba for fast numerical computations
-- 🌐 **Browser-based**: No local setup required - run everything in your web browser
-- 📚 **Educational**: Step-by-step solutions with explanations
-- 🔄 **Real-time Updates**: See changes instantly as you adjust parameters
-- 📱 **Responsive Design**: Works on desktop and mobile devices
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-<!-- GETTING STARTED -->
 
 ## Getting Started
 
@@ -119,39 +87,112 @@ To get the interactive exercises running locally, follow these simple steps.
 ### Prerequisites
 
 - **Python 3.11** or higher
-- **pip** or **uv** package manager (uv recommended for faster installations)
+- **uv** (recommended) or **pip** package manager
 
 ### Installation
 
-1. **Clone the repository**
+We provide multiple installation methods. **uv is recommended** for faster and more reliable dependency management, but traditional pip methods are also supported.
 
-   ```sh
-   git clone https://github.com/AGBV/DigiSiV.git
-   cd DigiSiV
-   ```
+#### Option 1: Using uv (Recommended) ⚡
 
-2. **Install dependencies**
+**uv** is a fast Python package installer and resolver. If you don't have it installed:
 
-   Using uv (recommended):
+```sh
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# or
+pip install uv
+```
 
-   ```sh
-   uv install
-   ```
+Then install the project:
 
-   Or using pip:
+```sh
+# Clone the repository
+git clone https://github.com/AGBV/DigiSiV.git
+cd DigiSiV
 
-   ```sh
-   pip install -e .
-   ```
+# Install all dependencies
+uv install
 
-3. **Run your first exercise**
-   ```sh
-   streamlit run exercise00/app.py
-   ```
+# Run exercises directly with uv
+uv run streamlit run exercise00/app.py
+uv run streamlit run exercise01/m1.py
+```
+
+#### Option 2: Using pip with Virtual Environment 🐍
+
+```sh
+# Clone the repository
+git clone https://github.com/AGBV/DigiSiV.git
+cd DigiSiV
+
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install from pyproject.toml (recommended)
+pip install -e .
+
+# OR install from requirements.txt
+pip install -r requirements.txt
+
+# Run exercises
+streamlit run exercise00/app.py
+streamlit run exercise01/m1.py
+```
+
+#### Option 3: Global pip Installation (Not Recommended)
+
+```sh
+# Clone the repository
+git clone https://github.com/AGBV/DigiSiV.git
+cd DigiSiV
+
+# Install globally from requirements.txt
+pip install -r requirements.txt
+
+# Run exercises
+streamlit run exercise00/app.py
+streamlit run exercise01/m1.py
+```
+
+### Quick Start
+
+Once installed, choose your exercise and run it:
+
+**For complex number visualization:**
+```sh
+# With uv (recommended)
+uv run streamlit run exercise00/app.py
+
+# With pip (in activated venv)
+streamlit run exercise00/app.py
+```
+
+**For audio signal processing:**
+```sh
+# With uv (recommended) 
+uv run streamlit run exercise01/m1.py
+
+# With pip (in activated venv)
+streamlit run exercise01/m1.py
+```
 
 The application will open in your default web browser at `http://localhost:8501` 🚀
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Development Mode
+
+For development with automatic reloading when files change:
+
+```sh
+# With uv
+uv run streamlit run --server.runOnSave true exercise00/app.py
+
+# With pip
+streamlit run --server.runOnSave true exercise00/app.py
+```
+
+_💡 **Tip**: Use the sidebar controls in each application to adjust parameters and explore different scenarios!_
 
 <!-- EXERCISES -->
 
@@ -163,6 +204,10 @@ The application will open in your default web browser at `http://localhost:8501`
 DigiSiV/
 ├── exercise00/          # 🎨 Introduction: Complex number visualization
 │   └── app.py          #    Interactive Mandelbrot Set explorer
+├── exercise01/          # 🎵 Audio Signal Processing
+│   ├── m1.py           #    Interactive audio analysis app
+│   ├── M1.ipynb        #    Jupyter notebook with detailed analysis
+│   └── audio01.wav     #    Sample audio file
 ├── MA2/                # ⚙️  Parameter effects on discretization
 │   ├── app.py          #    Main Streamlit application
 │   ├── functions.py    #    Signal processing helper functions
@@ -174,13 +219,30 @@ DigiSiV/
 
 ### 🎨 Exercise 0: Introduction to Complex Numbers
 
+- **File**: `exercise00/app.py`
 - **Topic**: Complex number visualization through fractals
 - **Concepts**: Iterative algorithms, complex plane, mathematical visualization
 - **Features**:
-  - Interactive Mandelbrot Set exploration
-  - Real-time parameter adjustment
-  - High-performance computation with Numba
+  - Interactive Mandelbrot Set exploration with customizable parameters
+  - Real-time parameter adjustment (max iterations, pixel resolution)
+  - High-performance computation with Numba JIT compilation
+  - Beautiful fractal visualization using Plotly heatmaps
+  - Smooth color gradients and zoom capabilities
 - **Run**: `streamlit run exercise00/app.py`
+
+### 🎵 Exercise 1: Audio Signal Processing
+
+- **Files**: `exercise01/m1.py` (Streamlit app), `exercise01/M1.ipynb` (Jupyter notebook)
+- **Topic**: Time and frequency domain analysis of audio signals
+- **Concepts**: Digital audio processing, FFT, frequency spectrum analysis, sampling
+- **Features**:
+  - Interactive audio file upload or use default sample
+  - Time-domain signal visualization with adjustable time windows
+  - Frequency spectrum analysis using Fast Fourier Transform (FFT)
+  - Half/full spectrum display options
+  - Real-time parameter adjustment for signal analysis
+- **Sample Audio**: Includes `audio01.wav` for testing
+- **Run**: `streamlit run exercise01/m1.py`
 
 <!-- ### ⚙️ Exercise MA2: Discretization Parameter Effects -->
 
@@ -194,38 +256,30 @@ DigiSiV/
 <!-- - **Run**: `streamlit run MA2/app.py` -->
 <!-- - **Link**: [Exercise Details](https://github.com/AGBV/DigiSiV/tree/main/MA2) -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
 
 ## Usage
 
-Each exercise is a standalone Streamlit application. Here's how to explore the different signal processing concepts:
-
-### 🎨 Mandelbrot Set Visualization (Exercise 0)
+### Running Exercises
 
 ```sh
-streamlit run exercise00/app.py
+# With uv (recommended)
+uv run streamlit run exercise00/app.py  # Complex number visualization
+uv run streamlit run exercise01/m1.py   # Audio signal processing
+
+# With pip (in activated virtual environment)  
+streamlit run exercise00/app.py  # Complex number visualization
+streamlit run exercise01/m1.py   # Audio signal processing
 ```
 
-- Explore complex number mathematics through beautiful fractal visualizations
-- Adjust iteration parameters and zoom levels
-- Learn about mathematical convergence and divergence
+### Development Mode
 
-<!-- ### ⚙️ Discretization Analysis (Exercise MA2) -->
-<!-- ```sh -->
-<!-- streamlit run MA2/app.py -->
-<!-- ``` -->
-<!-- - Compare continuous and discrete signal processing systems -->
-<!-- - Adjust system parameters (τ, ω, damping) and see real-time effects -->
-<!-- - Visualize transfer functions and impulse responses -->
-<!-- - Understand the implications of different discretization approaches -->
-
-### 🛠️ Development Mode
-
-For development with automatic reloading:
+For automatic reloading when files change:
 
 ```sh
+# With uv
+uv run streamlit run --server.runOnSave true exercise00/app.py
+
+# With pip  
 streamlit run --server.runOnSave true exercise00/app.py
 ```
 
@@ -242,14 +296,14 @@ _💡 **Tip**: Use the sidebar controls in each application to adjust parameters
 1. **Create exercise directory**
 
    ```sh
-   mkdir exercise01
-   cd exercise01
+   mkdir exercise02
+   cd exercise02
    ```
 
 2. **Create Streamlit app**
 
    ```python
-   # exercise01/app.py
+   # exercise02/app.py
    import streamlit as st
    import numpy as np
 
@@ -257,7 +311,17 @@ _💡 **Tip**: Use the sidebar controls in each application to adjust parameters
    # Your exercise implementation
    ```
 
-3. **Update this README** with exercise description
+3. **Test your new exercise**
+
+   ```sh
+   # With uv
+   uv run streamlit run exercise02/app.py
+   
+   # With pip (in venv)
+   streamlit run exercise02/app.py
+   ```
+
+4. **Update this README** with exercise description
 
 ### Project Setup with devenv (Optional)
 
@@ -268,26 +332,23 @@ This project supports [devenv](https://devenv.sh/) for reproducible development 
 direnv allow
 ```
 
-### Dependencies
+### Package Management
 
-The project uses these core libraries:
-
+**Dependencies:**
 - **NumPy**: Numerical computations and array operations
-- **Plotly**: Interactive plotting and visualization
+- **Plotly**: Interactive plotting and visualization  
 - **Streamlit**: Web application framework for Python
 - **Numba**: Just-in-time compilation for performance optimization
+- **SciPy**: Scientific computing functions
 
-See `pyproject.toml` for the complete dependency list.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
+**Configuration files:**
+- `pyproject.toml`: Modern Python project configuration (preferred)
+- `requirements.txt`: Traditional pip requirements (auto-generated from uv)
+- `uv.lock`: Exact dependency versions for reproducible installs
 
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-### English
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
@@ -297,29 +358,16 @@ If you have a suggestion that would make this better, please fork the repo and c
 4. Push to the Branch (`git push origin feature/AmazingExercise`)
 5. Open a Pull Request
 
-### Deutsch
-
-Wenn Sie einen Vorschlag haben, der dies verbessern würde, forken Sie bitte das Repository und erstellen Sie einen Pull Request. Sie können auch einfach ein Issue mit dem Tag "Enhancement" öffnen.
-
-**Ideas for contributions / Ideen für Beiträge:**
-
+**Ideas for contributions:**
 - 📚 Add new signal processing exercises
 - 🐛 Fix bugs or improve existing implementations
 - 📖 Enhance documentation or add German translations
 - 🎨 Improve visualizations and user interface
 - ⚡ Performance optimizations
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
 
@@ -333,8 +381,6 @@ Resources and inspiration that made this project possible:
 - ⚡ [Numba](https://numba.pydata.org) - High-performance Python compiler
 - 🎨 [Shields.io](https://shields.io) - Beautiful README badges
 - 📖 [Best README Template](https://github.com/othneildrew/Best-README-Template) - Inspiration for this README
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
