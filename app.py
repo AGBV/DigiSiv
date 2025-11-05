@@ -4,6 +4,7 @@ import streamlit as st
 pg = st.navigation(
     [
         st.Page("exercise00/mandelbrot.py"),
+        st.Page("exercise01/M01.py"),
         st.Page("exercise02/M02.py"),
     ]
 )
