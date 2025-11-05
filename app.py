@@ -1,0 +1,10 @@
+import streamlit as st
+
+# st.set_page_config(page_title="DigiSiv", page_icon=":material/edit:")
+pg = st.navigation(
+    [
+        st.Page("exercise00/mandelbrot.py"),
+        st.Page("exercise02/M02.py"),
+    ]
+)
+pg.run()
