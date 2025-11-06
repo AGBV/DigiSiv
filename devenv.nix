@@ -17,7 +17,9 @@
   # languages.rust.enable = true;
 
   # https://devenv.sh/processes/
-  # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
+  processes = {
+    streamlit.exec = "uv run streamlit run app.py";
+  };
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;
@@ -32,7 +34,7 @@
     hello         # Run scripts directly
     git --version # Use packages
 
-    if [ ! -L "$DEVENV_ROOT/venv" ]; then
+    if [ ! -L "$DEVENV_ROOT/.venv" ]; then
         ln -s "$DEVENV_STATE/venv/" "$DEVENV_ROOT/.venv"
     fi
   '';
