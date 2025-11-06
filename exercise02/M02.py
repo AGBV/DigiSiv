@@ -57,7 +57,9 @@ with col3:
     phases = [np.pi * x for x in [0, 1 / 6, 1 / 4, 1 / 3, 1 / 2, 1]]
 
     def format_func(x):
-        return f"pi/{(x / np.pi) ** -1 if x > 0 else 0}"
+        if x == 0.0:
+            return "0"
+        return f"pi/{(x / np.pi) ** -1:.0f}"
 
     end = len(phases) - 1
     phase = np.array(
