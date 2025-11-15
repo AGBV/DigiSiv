@@ -6,6 +6,7 @@ pg = st.navigation(
         st.Page("exercise00/mandelbrot.py"),
         st.Page("exercise01/M01.py"),
         st.Page("exercise02/M02.py"),
+        st.Page("exercise04/M03.py"),
     ]
 )
 pg.run()
