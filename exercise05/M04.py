@@ -20,7 +20,7 @@ t_s = st.number_input(
     min_value=0.001,
     max_value=2.0,
     value=0.25,
-    step=0.001,
+    step=0.01,
 )
 
 signals = st.text_area(
