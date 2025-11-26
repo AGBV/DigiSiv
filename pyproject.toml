@@ -17,6 +17,8 @@ dependencies = [
   "scipy>=1.16.3",
   "streamlit>=1.50.0",
   "lcapy>=1.26",
+  "pandoc>=2.4",
+  "nbconvert[qtpdf,webpdf]>=7.16.6",
 ]
 
 [tool.pyright]
