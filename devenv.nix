@@ -11,6 +11,7 @@
 
   processes = {
     streamlit.exec = "uv run streamlit run app.py";
+    jupyter.exec = "uv run jupyter notebook";
   };
 
   scripts = {
