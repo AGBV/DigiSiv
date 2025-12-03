@@ -2,21 +2,44 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 import streamlit.components.v1 as components
-from functions import (
-    impulse_response_continuous,
-    impulse_response_discrete,
-    transfer_continuous,
-    transfer_discrete,
-)
+
+N = 10000
+
+
+def transfer_discrete(tau, omega_l, t, n):
+    delta_omega = 2 * np.pi / t / n
+    omega = np.arange(n) * delta_omega
+    transfer_function = -1 / (1 + 1j * omega * tau)
+
+    return omega, transfer_function
+
+
+def transfer_continuous(tau):
+    omega = np.logspace(-3, 3, N)
+    return omega, -1 / (1 + 1j * omega * tau)
+
+
+def impulse_response_discrete(transfer_function_discrete, t):
+    h = np.fft.ifft(transfer_function_discrete)
+    h = np.real(h)
+    h /= t / 2
+    return h
+
+
+def impulse_response_continuous(tau, t_max):
+    t = np.linspace(0, t_max, N)
+    return t, -1 / tau * np.exp(-t / tau)
+
 
 n_range = np.logspace(1, 5, 5, base=10, dtype=int)
 
+title = "Implication of parameters on discretization"
 st.set_page_config(
-    page_title="Implication of parameters on discretization",
+    page_title=title,
     layout="wide",
 )
-st.title("Implication of parameters on discretization")
-st.write("https://github.com/AGBV/DigiSiV/tree/main/MA2")
+st.title(title)
+st.write("https://github.com/AGBV/DigiSiV/tree/main/exercie06/MA2.py")
 
 with st.sidebar:
     form = st.form("params")
