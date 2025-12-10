@@ -44,36 +44,61 @@ st.write("https://github.com/AGBV/DigiSiV/tree/main/exercie06/MA2.py")
 with st.sidebar:
     form = st.form("params")
 
-    tau = form.slider("tau", 0.25, 2.0, 1.0, 0.25)
-
+    tau = form.slider(
+        "tau 2",
+        min_value=1e-2,
+        max_value=1e2,
+        value=1.0,
+        step=1.0,
+    )
     form.divider()
 
     form.text("System 1")
-    omega_l1_factor = form.slider(
-        "omega", 1, 20, 10, 1, key="omega1", help="omega=factor/tau"
+    omega_l1 = form.slider(
+        "omega",
+        min_value=1e-2,
+        max_value=1e2,
+        value=1.0,
+        step=1.0,
+        key="omega1",
     )
-    t_1_factor = form.slider(
-        "T", 0.1, 1.0, 0.1, 0.05, key="t1", help="T=factor*pi/omega"
+    t_1 = form.slider(
+        "T",
+        min_value=0.1,
+        max_value=1.0,
+        value=0.1,
+        step=0.05,
+        key="t1",
+        help="T=2*pi/omega",
     )
     n_1 = form.select_slider("N", n_range, 100, key="n1")
 
     form.divider()
 
     form.text("System 2")
-    omega_l2_factor = form.slider(
-        "omega", 1, 20, 5, 1, key="omega2", help="omega=factor/tau"
+    omega_l2 = form.slider(
+        "omega",
+        min_value=1e-2,
+        max_value=1e2,
+        value=10.0,
+        step=1.0,
+        key="omega2",
     )
-    t_2_factor = form.slider(
-        "T", 0.1, 1.0, 0.1, 0.05, key="t2", help="T=factor*pi/omega"
+    t_2 = form.slider(
+        "T",
+        min_value=0.1,
+        max_value=1.0,
+        value=0.1,
+        step=0.05,
+        key="t2",
+        help="T=2*pi/omega",
     )
-    n_2 = form.select_slider("N", n_range, 1000, key="n2")
+    n_2 = form.select_slider("N", n_range, 100, key="n2")
 
     submitted = form.form_submit_button("Submit changes")
 
-omega_l1 = omega_l1_factor / tau
-omega_l2 = omega_l2_factor / tau
-t_1 = t_1_factor * np.pi / omega_l1
-t_2 = t_2_factor * np.pi / omega_l2
+t_1 *= 2 * np.pi / omega_l1
+t_2 *= 2 * np.pi / omega_l2
 
 omega_c, transfer_function_c = transfer_continuous(tau)
 omega_1, transfer_function_1 = transfer_discrete(tau, omega_l1, t_1, n_1)
