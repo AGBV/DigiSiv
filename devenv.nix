@@ -7,7 +7,10 @@
 }:
 
 {
-  packages = with pkgs; [ git ];
+  packages = with pkgs; [
+    git
+    uv
+  ];
 
   processes = {
     streamlit.exec = "uv run streamlit run app.py";
@@ -15,7 +18,7 @@
   };
 
   scripts = {
-    streamlit.exec = ''uv run streamlit "$@"'';
+    # streamlit.exec = ''uv run streamlit "$@"'';
     jupyter.exec = ''uv run jupyter "$@"'';
   };
 

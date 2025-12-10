@@ -560,6 +560,7 @@ dependencies = [
     { name = "ruff" },
     { name = "scipy" },
     { name = "streamlit" },
+    { name = "taichi" },
 ]
 
 [package.metadata]
@@ -576,6 +577,16 @@ requires-dist = [
     { name = "ruff", specifier = ">=0.14.3" },
     { name = "scipy", specifier = ">=1.16.3" },
     { name = "streamlit", specifier = ">=1.50.0" },
+    { name = "taichi", specifier = ">=1.7.4" },
+]
+
+[[package]]
+name = "dill"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/80/630b4b88364e9a8c8c5797f4602d0f76ef820909ee32f0bacb9f90654042/dill-0.4.0.tar.gz", hash = "sha256:0633f1d2df477324f53a895b02c901fb961bdbf65a17122586ea7019292cbcf0", size = 186976, upload-time = "2025-04-16T00:41:48.867Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/3d/9373ad9c56321fdab5b41197068e1d8c25883b3fea29dd361f9b55116869/dill-0.4.0-py3-none-any.whl", hash = "sha256:44f54bf6412c2c8464c14e8243eb163690a9800dbe2c367330883b19c7561049", size = 119668, upload-time = "2025-04-16T00:41:47.671Z" },
 ]
 
 [[package]]
@@ -1292,6 +1303,18 @@ wheels = [
 ]
 
 [[package]]
+name = "markdown-it-py"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mdurl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5b/f5/4ec618ed16cc4f8fb3b701563655a69816155e79e24a17b651541804721d/markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3", size = 73070, upload-time = "2025-08-11T12:57:52.854Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/94/54/e7d793b573f298e1c9013b8c4dade17d481164aa517d1d7148619c2cedbf/markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147", size = 87321, upload-time = "2025-08-11T12:57:51.923Z" },
+]
+
+[[package]]
 name = "markupsafe"
 version = "3.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1439,6 +1462,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c7/74/97e72a36efd4ae2bccb3463284300f8953f199b5ffbc04cbbb0ec78f74b1/matplotlib_inline-0.2.1.tar.gz", hash = "sha256:e1ee949c340d771fc39e241ea75683deb94762c8fa5f2927ec57c83c4dffa9fe", size = 8110, upload-time = "2025-10-23T09:00:22.126Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/af/33/ee4519fa02ed11a94aef9559552f3b17bb863f2ecfe1a35dc7f548cde231/matplotlib_inline-0.2.1-py3-none-any.whl", hash = "sha256:d56ce5156ba6085e00a9d54fead6ed29a9c47e215cd1bba2e976ef39f5710a76", size = 9516, upload-time = "2025-10-23T09:00:20.675Z" },
+]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
 ]
 
 [[package]]
@@ -2489,6 +2521,19 @@ wheels = [
 ]
 
 [[package]]
+name = "rich"
+version = "14.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "markdown-it-py" },
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fb/d2/8920e102050a0de7bfabeb4c4614a49248cf8d5d7a8d01885fbb24dc767a/rich-14.2.0.tar.gz", hash = "sha256:73ff50c7c0c1c77c8243079283f4edb376f0f6442433aecb8ce7e6d0b92d1fe4", size = 219990, upload-time = "2025-10-09T14:16:53.064Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/25/7a/b0178788f8dc6cafce37a212c99565fa1fe7872c70c6c9c1e1a372d9d88f/rich-14.2.0-py3-none-any.whl", hash = "sha256:76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd", size = 243393, upload-time = "2025-10-09T14:16:51.245Z" },
+]
+
+[[package]]
 name = "rpds-py"
 version = "0.27.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2800,6 +2845,28 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/83/d3/803453b36afefb7c2bb238361cd4ae6125a569b4db67cd9e79846ba2d68c/sympy-1.14.0.tar.gz", hash = "sha256:d3d3fe8df1e5a0b42f0e7bdf50541697dbe7d23746e894990c030e2b05e72517", size = 7793921, upload-time = "2025-04-27T18:05:01.611Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl", hash = "sha256:e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5", size = 6299353, upload-time = "2025-04-27T18:04:59.103Z" },
+]
+
+[[package]]
+name = "taichi"
+version = "1.7.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama" },
+    { name = "dill" },
+    { name = "numpy" },
+    { name = "rich" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/23/89/3a920b880e058b4d8c5b0fe1e695481725707aab5ac35b3e91295903dda0/taichi-1.7.4-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:4cbb5a16cac228862c5da2ec71ef722e637c7a5ebf636f8f11000c2f8a9b6693", size = 50437174, upload-time = "2025-07-31T14:49:20.548Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/c6/90b110c26588e9c8f1f71d1485b176e547b581075102d54aeb38d2e48ae4/taichi-1.7.4-cp311-cp311-manylinux_2_27_x86_64.whl", hash = "sha256:5c3c1624daeb1554c1a2b6ee9f9b8398bd8392d7f89fc65395f94baecf049f89", size = 56180510, upload-time = "2025-07-31T14:48:47.605Z" },
+    { url = "https://files.pythonhosted.org/packages/45/35/0495da9f8f0afa801a8e2da262fb75814bf9a4d788946c40bfc9340bf088/taichi-1.7.4-cp311-cp311-win_amd64.whl", hash = "sha256:767d977f077efcc83eb746a8dd1ccd196db782f48eac07c495922b36f8828e2c", size = 83206769, upload-time = "2025-07-31T14:48:59.236Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/5b/7c7d6b8259fba064a4b3908f67f2488efbc3104d2a2fbaba00d81d30bac2/taichi-1.7.4-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:5c7d188f8a8a15f07b197aa881517ffc7459663ee25a0e36636ce347c0649353", size = 50345635, upload-time = "2025-07-31T14:49:27.27Z" },
+    { url = "https://files.pythonhosted.org/packages/74/74/c7aca2af38d38efe9ad8430864e97e87c0b0d4affa2ea6cc4aecbbcfdb0e/taichi-1.7.4-cp312-cp312-manylinux_2_27_x86_64.whl", hash = "sha256:6f1303aedae3ea25e33cef5f30259fc2f66c7f0287433c4e31bdb25fdcd4d81e", size = 56298504, upload-time = "2025-07-31T14:48:55.232Z" },
+    { url = "https://files.pythonhosted.org/packages/27/32/5882f3fafbd981fe060c7ee96355161b82c78e7624a4460eefaf2760ea64/taichi-1.7.4-cp312-cp312-win_amd64.whl", hash = "sha256:d078481d84032d9284a12a0b78672a4a2915786d9106791fad657c09352e9565", size = 83312702, upload-time = "2025-07-31T14:49:03.715Z" },
+    { url = "https://files.pythonhosted.org/packages/93/62/7a5c8562550e17054ea59e41de9b82680f19b5e45442f6967f442aeb8e60/taichi-1.7.4-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:a907fc86029c4b5ba85352a77f48af14717711466def8d6d2b8b17d75311c30f", size = 50439402, upload-time = "2025-07-31T14:48:51.558Z" },
+    { url = "https://files.pythonhosted.org/packages/81/cd/3858352ede95ad71a8bec677da440011b42df0214ee675a3dd3f0dea607a/taichi-1.7.4-cp313-cp313-manylinux_2_27_x86_64.whl", hash = "sha256:001ff64725e58e25ff832facc4ff1ed5ded968c64d5cd46275795999f1cce4e0", size = 56298954, upload-time = "2025-07-31T14:49:17.104Z" },
+    { url = "https://files.pythonhosted.org/packages/10/43/0f4eac57b2eaee9e906139794eb12e752a7f8d077bbd1be695acdc9d117c/taichi-1.7.4-cp313-cp313-win_amd64.whl", hash = "sha256:ff9847a788c2193df61626266eb2df2ce679c372cb1669ffa806e7c45722ddc7", size = 83313386, upload-time = "2025-07-31T14:48:38.371Z" },
 ]
 
 [[package]]
