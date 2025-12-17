@@ -67,12 +67,12 @@ else:
     default_path = Path(__file__).parent / "handel.wav"
     sampling_rate, audio_signal = load_and_normalize_audio(default_path)
 
-if audio_signal is None:
-    st.warning("Keine 'handel.wav' gefunden. Nutze synthetisches Signal.")
-    sampling_rate, audio_signal = generate_synthetic_signal()
-else:
-    st.error("Nutze Standard-Datei: handel.wav")
-    st.stop()
+    if audio_signal is None:
+        st.warning("Keine 'handel.wav' gefunden. Nutze synthetisches Signal.")
+        sampling_rate, audio_signal = generate_synthetic_signal()
+    else:
+        st.error("Nutze Standard-Datei: handel.wav")
+        st.stop()
 
 # Zeitvektor erstellen
 t = np.arange(len(audio_signal)) / sampling_rate
@@ -137,7 +137,7 @@ match filter_key:
             "Sigma (σ)", min_value=0.1, max_value=20.0, value=2.0, step=0.1
         )
         # Gauß Kernel
-        kernel = signal.windows.gaussian(window_len, std=sigma)
+        kernel = signal.windows.gaussian(window_len, std=sigma)  # pyright: ignore
         kernel /= np.sum(kernel)
         sig_filtered = signal.lfilter(kernel, 1, audio_signal)
         kernel_viz = kernel
