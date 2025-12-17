@@ -67,15 +67,12 @@ else:
     default_path = Path(__file__).parent / "handel.wav"
     sampling_rate, audio_signal = load_and_normalize_audio(default_path)
 
-    if audio_signal is None:
-        st.warning("Keine 'handel.wav' gefunden. Nutze synthetisches Signal.")
-        sampling_rate, audio_signal = generate_synthetic_signal()
-    else:
-        st.error("Nutze Standard-Datei: handel.wav")
-        st.stop()
+if (audio_signal is None) or (sampling_rate is None):
+    st.warning("Keine datei gefunden. Nutze synthetisches Signal.")
+    sampling_rate, audio_signal = generate_synthetic_signal()
 
 # Zeitvektor erstellen
-t = np.arange(len(audio_signal)) / sampling_rate
+t = np.arange(audio_signal.size) / sampling_rate
 
 
 # 2. SIDEBAR & FILTER LOGIK
@@ -83,6 +80,9 @@ filter_types = {
     "mittelwert": "Boxcar",
     "polynom": "Savitzky-Golay",
     "normal": "Gauß",
+    "median": "Nicht-linear",
+    "butterworth": "IIR Tiefpass",
+    "sinc": "FIR",
 }
 
 with st.sidebar:
@@ -109,19 +109,20 @@ kernel_viz = None
 
 match filter_key:
     case "mittelwert":
-        kernel = np.ones(window_len)
-        sig_filtered = signal.lfilter(kernel, 1, audio_signal)
         kernel = np.ones(window_len) / window_len
+        sig_filtered = signal.lfilter(kernel, 1, audio_signal)
+        # sig_filtered = signal.convolve(audio_signal, kernel, mode="same")
         kernel_viz = kernel
-
     case "polynom":
         poly_order = 2
-        if window_len < poly_order + 1:
+        if window_len <= poly_order:
             st.error(f"Fensterlänge muss > {poly_order} sein.")
             st.stop()
 
         sig_filtered = signal.savgol_filter(
-            audio_signal, window_length=window_len, polyorder=poly_order
+            audio_signal,
+            window_length=window_len,
+            polyorder=poly_order,
         )
 
         # Impulsantwort für Visualisierung rekonstruieren
@@ -140,6 +141,76 @@ match filter_key:
         kernel = signal.windows.gaussian(window_len, std=sigma)  # pyright: ignore
         kernel /= np.sum(kernel)
         sig_filtered = signal.lfilter(kernel, 1, audio_signal)
+        kernel_viz = kernel
+    case "median":
+        # Fensterlänge muss ungerade sein
+        if window_len % 2 == 0:
+            window_len += 1
+
+        sig_filtered = signal.medfilt(audio_signal, kernel_size=window_len)
+
+        # Median hat keine klassische "Impulsantwort" im linearen Sinne,
+        # aber wir können zeigen, was er aus einem Impuls macht (nämlich nichts, wenn er schmal ist!)
+        # Visualisierung: Wir nehmen eine Rampe mit einem Ausreißer
+        viz_len = window_len * 3
+        kernel_viz = np.zeros(viz_len)
+        # Erzeuge eine Rampe
+        kernel_viz = np.linspace(0, 1, viz_len)
+        # Füge einen Ausreißer (Knackser) in die Mitte
+        kernel_viz[viz_len // 2] = 0.0
+        # Filtere die Visualisierung
+        kernel_viz = signal.medfilt(kernel_viz, window_len)
+    case "butterworth":
+        st.sidebar.markdown("---")
+        # Cutoff Frequenz statt Fensterlänge
+        cutoff = st.sidebar.slider(
+            "Grenzfrequenz (Hz)",
+            min_value=50,
+            max_value=int(sampling_rate / 2) - 1,
+            value=1000,
+        )
+        order = st.sidebar.slider(
+            "Ordnung (Steilheit)",
+            min_value=1,
+            max_value=10,
+            value=4,
+        )
+
+        # Design des Filters
+        sos = signal.butter(order, cutoff, btype="low", fs=sampling_rate, output="sos")
+        sig_filtered = signal.sosfiltfilt(
+            sos, audio_signal
+        )  # sosfiltfilt filtert vor & zurück -> null Phasenverschiebung
+
+        # Impulsantwort für Visualisierung
+        # Wir schicken einen Impuls durch
+        impulse = np.zeros(100)  # Länge willkürlich für Viz
+        impulse[50] = 1
+        kernel_viz = signal.sosfiltfilt(sos, impulse)
+    case "sinc":
+        # Wir berechnen einen FIR Filter mit der Window-Methode
+        # Cutoff festlegen (z.B. relativ zur Nyquist-Frequenz)
+        cutoff_hz = st.sidebar.slider(
+            "Cutoff (Hz)",
+            min_value=100,
+            max_value=int(sampling_rate / 2),
+            value=2000,
+        )
+
+        # Anzahl Taps (Punkte) sollte ungerade sein
+        numtaps = window_len if window_len % 2 != 0 else window_len + 1
+
+        # Erstelle Filterkoeffizienten (Hamming Fenster standardmäßig)
+        kernel = signal.firwin(
+            numtaps,
+            cutoff=cutoff_hz,
+            fs=sampling_rate,
+            window="hamming",
+        )
+
+        # Oder besser zentriert:
+        sig_filtered = np.convolve(audio_signal, kernel, mode="same")
+
         kernel_viz = kernel
 
 # 3. VISUALISIERUNG
@@ -243,14 +314,19 @@ with tab1:
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
-    col1, col2 = st.columns(2)
 
     def to_wav(sig, fs):
         buf = io.BytesIO()
         # Clip signal to avoid distortion before saving
+        # sig_clipped = np.clip(sig, -1.0, 1.0)
+        # wavfile.write(buf, int(fs), sig_clipped)
+        # wavfile.write(buf, int(fs), sig)
         sig_clipped = np.clip(sig, -1.0, 1.0)
-        wavfile.write(buf, int(fs), sig_clipped)
+        sig_int16 = (sig_clipped * 32767).astype(np.int16)
+        wavfile.write(buf, int(fs), sig_int16)
         return buf
+
+    col1, col2 = st.columns(2)
 
     with col1:
         st.markdown("### Original")
