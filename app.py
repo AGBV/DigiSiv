@@ -9,6 +9,7 @@ pg = st.navigation(
         st.Page("exercise04/M03.py"),
         st.Page("exercise05/M04.py"),
         st.Page("exercise06/MA2.py"),
+        st.Page("exercise08/M05.py"),
     ]
 )
 pg.run()
