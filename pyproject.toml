@@ -7,9 +7,11 @@ requires-python = ">=3.11"
 dependencies = [
   # jupyter
   "jupyter>=1.1.1",
+  "jupyterlab-code-formatter>=3.0.2",
   "nbqa>=1.9.1",
   "ruff>=0.14.3",
   "black>=25.9.0",
+  "isort>=7.0.0",
   # scientific
   "numba>=0.62.1",
   "numpy>=2.3.4",
