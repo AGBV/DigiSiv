@@ -112,11 +112,14 @@ git clone https://github.com/AGBV/DigiSiV.git
 cd DigiSiV
 
 # Install all dependencies
-uv install
+uv sync
 
-# Run exercises directly with uv
-uv run streamlit run exercise00/app.py
-uv run streamlit run exercise01/m1.py
+# Run all interactive exercises (navigation in the sidebar)
+uv run streamlit run app.py
+
+# ...or a single exercise
+uv run streamlit run exercise00/mandelbrot.py
+uv run streamlit run exercise01/M01.py
 ```
 
 #### Option 2: Using pip with Virtual Environment 🐍
@@ -137,8 +140,8 @@ pip install -e .
 pip install -r requirements.txt
 
 # Run exercises
-streamlit run exercise00/app.py
-streamlit run exercise01/m1.py
+streamlit run exercise00/mandelbrot.py
+streamlit run exercise01/M01.py
 ```
 
 #### Option 3: Global pip Installation (Not Recommended)
@@ -152,8 +155,8 @@ cd DigiSiV
 pip install -r requirements.txt
 
 # Run exercises
-streamlit run exercise00/app.py
-streamlit run exercise01/m1.py
+streamlit run exercise00/mandelbrot.py
+streamlit run exercise01/M01.py
 ```
 
 ### Quick Start
@@ -163,19 +166,19 @@ Once installed, choose your exercise and run it:
 **For complex number visualization:**
 ```sh
 # With uv (recommended)
-uv run streamlit run exercise00/app.py
+uv run streamlit run exercise00/mandelbrot.py
 
 # With pip (in activated venv)
-streamlit run exercise00/app.py
+streamlit run exercise00/mandelbrot.py
 ```
 
 **For audio signal processing:**
 ```sh
 # With uv (recommended) 
-uv run streamlit run exercise01/m1.py
+uv run streamlit run exercise01/M01.py
 
 # With pip (in activated venv)
-streamlit run exercise01/m1.py
+streamlit run exercise01/M01.py
 ```
 
 The application will open in your default web browser at `http://localhost:8501` 🚀
@@ -186,10 +189,10 @@ For development with automatic reloading when files change:
 
 ```sh
 # With uv
-uv run streamlit run --server.runOnSave true exercise00/app.py
+uv run streamlit run --server.runOnSave true exercise00/mandelbrot.py
 
 # With pip
-streamlit run --server.runOnSave true exercise00/app.py
+streamlit run --server.runOnSave true exercise00/mandelbrot.py
 ```
 
 _💡 **Tip**: Use the sidebar controls in each application to adjust parameters and explore different scenarios!_
@@ -202,16 +205,11 @@ _💡 **Tip**: Use the sidebar controls in each application to adjust parameters
 
 ```
 DigiSiV/
-├── exercise00/          # 🎨 Introduction: Complex number visualization
-│   └── app.py          #    Interactive Mandelbrot Set explorer
-├── exercise01/          # 🎵 Audio Signal Processing
-│   ├── m1.py           #    Interactive audio analysis app
-│   ├── M1.ipynb        #    Jupyter notebook with detailed analysis
-│   └── audio01.wav     #    Sample audio file
-├── MA2/                # ⚙️  Parameter effects on discretization
-│   ├── app.py          #    Main Streamlit application
-│   ├── functions.py    #    Signal processing helper functions
-│   └── requirements.txt#    Exercise-specific dependencies
+├── app.py              # 🚀 Streamlit entry point bundling all interactive apps
+├── exercise00/         # 🎨 Introduction: Mandelbrot set (mandelbrot.py)
+├── exercise01/         # 🎵 Audio signal processing (M01.py, M01.ipynb, audio01.wav)
+├── exercise02/ …       # 📓 Further exercises: Mxx.py (Streamlit) and Mxx.ipynb (Jupyter)
+├── exercise13/
 ├── pyproject.toml      # 📦 Project configuration and dependencies
 ├── LICENSE             # 📄 MIT License
 └── README.md           # 📖 This file
@@ -219,7 +217,7 @@ DigiSiV/
 
 ### 🎨 Exercise 0: Introduction to Complex Numbers
 
-- **File**: `exercise00/app.py`
+- **File**: `exercise00/mandelbrot.py`
 - **Topic**: Complex number visualization through fractals
 - **Concepts**: Iterative algorithms, complex plane, mathematical visualization
 - **Features**:
@@ -228,11 +226,11 @@ DigiSiV/
   - High-performance computation with Numba JIT compilation
   - Beautiful fractal visualization using Plotly heatmaps
   - Smooth color gradients and zoom capabilities
-- **Run**: `streamlit run exercise00/app.py`
+- **Run**: `streamlit run exercise00/mandelbrot.py`
 
 ### 🎵 Exercise 1: Audio Signal Processing
 
-- **Files**: `exercise01/m1.py` (Streamlit app), `exercise01/M1.ipynb` (Jupyter notebook)
+- **Files**: `exercise01/M01.py` (Streamlit app), `exercise01/M01.ipynb` (Jupyter notebook)
 - **Topic**: Time and frequency domain analysis of audio signals
 - **Concepts**: Digital audio processing, FFT, frequency spectrum analysis, sampling
 - **Features**:
@@ -242,7 +240,7 @@ DigiSiV/
   - Half/full spectrum display options
   - Real-time parameter adjustment for signal analysis
 - **Sample Audio**: Includes `audio01.wav` for testing
-- **Run**: `streamlit run exercise01/m1.py`
+- **Run**: `streamlit run exercise01/M01.py`
 
 <!-- ### ⚙️ Exercise MA2: Discretization Parameter Effects -->
 
@@ -263,12 +261,12 @@ DigiSiV/
 
 ```sh
 # With uv (recommended)
-uv run streamlit run exercise00/app.py  # Complex number visualization
-uv run streamlit run exercise01/m1.py   # Audio signal processing
+uv run streamlit run exercise00/mandelbrot.py  # Complex number visualization
+uv run streamlit run exercise01/M01.py   # Audio signal processing
 
 # With pip (in activated virtual environment)  
-streamlit run exercise00/app.py  # Complex number visualization
-streamlit run exercise01/m1.py   # Audio signal processing
+streamlit run exercise00/mandelbrot.py  # Complex number visualization
+streamlit run exercise01/M01.py   # Audio signal processing
 ```
 
 ### Development Mode
@@ -277,10 +275,10 @@ For automatic reloading when files change:
 
 ```sh
 # With uv
-uv run streamlit run --server.runOnSave true exercise00/app.py
+uv run streamlit run --server.runOnSave true exercise00/mandelbrot.py
 
 # With pip  
-streamlit run --server.runOnSave true exercise00/app.py
+streamlit run --server.runOnSave true exercise00/mandelbrot.py
 ```
 
 _💡 **Tip**: Use the sidebar controls in each application to adjust parameters and explore different scenarios!_
