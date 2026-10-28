@@ -22,6 +22,7 @@ dependencies = [
   "pandoc>=2.4",
   "nbconvert[qtpdf,webpdf]>=7.16.6",
   "taichi>=1.7.4",
+  "rasterio>=1.4.4",
 ]
 
 [tool.pyright]
