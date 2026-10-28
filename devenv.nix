@@ -7,6 +7,10 @@
 }:
 
 {
+  env = {
+    UV_PYTHON = toString config.languages.python.package.interpreter;
+  };
+
   packages = with pkgs; [
     git
     uv
@@ -44,7 +48,8 @@
 
     libraries = with pkgs; [
       zlib
-      glib.out
+      glib
+      expat
     ];
   };
 }
