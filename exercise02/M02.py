@@ -9,13 +9,23 @@ def sample(
     signal: npt.NDArray,
     sampling_frequency: float,
     new_sampling_frequency: float,
-    # hold: bool = False,
 ):
     if new_sampling_frequency > sampling_frequency:
-        raise Exception("The new sampling frequency can't be larger than the old one!")
+        raise ValueError("The new sampling frequency can't be larger than the old one!")
 
-    sampling_step = int(sampling_frequency // new_sampling_frequency)
+    # round, not //: 2000 // (2000 / 7) == 6.0 due to floating point
+    sampling_step = round(sampling_frequency / new_sampling_frequency)
     return signal[::sampling_step]
+
+
+def sample_and_hold(
+    signal: npt.NDArray,
+    sampling_frequency: float,
+    new_sampling_frequency: float,
+):
+    sampling_step = round(sampling_frequency / new_sampling_frequency)
+    sampled = sample(signal, sampling_frequency, new_sampling_frequency)
+    return np.repeat(sampled, sampling_step)[: signal.size]
 
 
 col1, col2, col3, col4 = st.columns(4)
@@ -32,8 +42,6 @@ time = np.arange(start_time, end_time, 1 / sampling_frequency)
 # or
 # number_sampling_points = sampling_frequency * (end_time - start_time)
 # time = np.linspace(start_time, end_time, number_sampling_points)
-
-subsampling_frequancy = sampling_frequency / subsampling_factor
 
 # amplitude = np.array([1, 1.2, 0.6])
 col1, col2, col3 = st.columns(3)
@@ -59,6 +67,8 @@ with col3:
     def format_func(x):
         if x == 0.0:
             return "0"
+        if x == np.pi:
+            return "pi"
         return f"pi/{(x / np.pi) ** -1:.0f}"
 
     end = len(phases) - 1
@@ -77,9 +87,11 @@ signal = np.sum(
     axis=0,
 )
 
-subsampling_frequancy = sampling_frequency / subsampling_factor
-sampled_signal = sample(signal, sampling_frequency, subsampling_frequancy)
-sampled_time = np.linspace(start_time, end_time, sampled_signal.size)
+subsampling_frequency = sampling_frequency / subsampling_factor
+sampled_signal = sample(signal, sampling_frequency, subsampling_frequency)
+# sample the time axis the same way, so the points sit at the true sampling instants
+sampled_time = sample(time, sampling_frequency, subsampling_frequency)
+held_signal = sample_and_hold(signal, sampling_frequency, subsampling_frequency)
 
 fig = go.Figure()
 fig.add_trace(
@@ -87,6 +99,14 @@ fig.add_trace(
         x=sampled_time,
         y=sampled_signal,
         name="Sampled",
+        mode="markers",
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=time,
+        y=held_signal,
+        name="Sample & Hold",
     )
 )
 fig.add_trace(
@@ -105,12 +125,15 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 st.divider()
-st.info("Extra! See what happens when the sub-sampling factor goes beyond 20 ;)")
+st.info(
+    "Extra! See what happens when the sub-sampling factor goes beyond 22, "
+    "i.e. when the 45 Hz component is above the Nyquist frequency ;)"
+)
 
 spectrum = np.array(fft(signal)) / sampling_frequency
 frequency = fftfreq(spectrum.size, 1 / sampling_frequency)
-spectrum_sampled = np.array(fft(sampled_signal)) / subsampling_frequancy
-frequency_sampled = fftfreq(spectrum_sampled.size, 1 / subsampling_frequancy)
+spectrum_sampled = np.array(fft(sampled_signal)) / subsampling_frequency
+frequency_sampled = fftfreq(spectrum_sampled.size, 1 / subsampling_frequency)
 
 col1, col2 = st.columns(2)
 half = col1.checkbox("Show positive spectrum only", value=True)
@@ -142,6 +165,11 @@ fig.add_trace(
         name="Original",
         line=dict(color="rgba(255, 0, 0, 0.5)"),
     )
+)
+fig.add_vline(
+    x=subsampling_frequency / 2,
+    line_dash="dash",
+    annotation_text="Nyquist (sampled)",
 )
 fig.update_layout(
     title="Spectrum",
