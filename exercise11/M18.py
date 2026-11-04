@@ -1,6 +1,5 @@
 import numpy as np
 import plotly.graph_objects as go
-import scipy.signal.windows as win
 import streamlit as st
 from plotly.subplots import make_subplots
 
@@ -12,7 +11,7 @@ st.set_page_config(
 st.title("📡 Signal-Analyse: High-End Fensterfunktionen")
 st.markdown("""
 Dieses Tool implementiert die **Cosine-Sum Window Familie** basierend auf Literatur-Koeffizienten.
-Formel: $w[n] = \\sum_{k=0}^{K} (-1)^k a_k \\cos(\\frac{2\\pi k n}{N})$
+Formel: $w[n] = \\sum_{k=0}^{K} (-1)^k a_k \\cos(\\frac{2\\pi k n}{N - 1})$
 """)
 
 # --- 1. KOEFFIZIENTEN-DATENBANK (Aus Wikipedia extrahiert) ---
@@ -25,10 +24,11 @@ presets = {
     # Blackman Familie
     "Blackman (Standard)": [0.42, 0.50, 0.08, 0.0, 0.0],
     "Blackman (Exact)": [7938 / 18608, 9240 / 18608, 1430 / 18608, 0.0, 0.0],
-    # Low-Sidelobe Fenster (Aus deinem Text)
+    # Low-Sidelobe Fenster
     "Nuttall (Continuous)": [0.355768, 0.487396, 0.144232, 0.012604, 0.0],
     "Blackman-Nuttall": [0.3635819, 0.4891775, 0.1365995, 0.0106411, 0.0],
     "Blackman-Harris (3-Term)": [0.4243801, 0.4973406, 0.0782793, 0.0, 0.0],
+    "Blackman-Harris (4-Term)": [0.35875, 0.48829, 0.14128, 0.01168, 0.0],
     # Flat Top (5-Term Variante aus Matlab)
     "Flat Top (Matlab)": [
         0.21557895,
@@ -154,11 +154,12 @@ mag_raw = np.abs(np.fft.fftshift(np.fft.fft(y_noise, n_fft))) / n_points
 gain_corr = np.sum(w_n) if np.sum(w_n) > 0 else 1.0
 mag_win = np.abs(np.fft.fftshift(np.fft.fft(y_windowed, n_fft))) / gain_corr
 
-# Filter (Positive Frequenzen)
+# Einseitiges Spektrum: positive Frequenzen, mal 2 für die negativen.
+# Ein Sinus der Amplitude A hat sonst nur A/2 und passt nicht zu den Soll-Werten.
 pos_mask = f_axis >= 0
 f_plot = f_axis[pos_mask]
-y_plot_raw = mag_raw[pos_mask]
-y_plot_win = mag_win[pos_mask]
+y_plot_raw = 2 * mag_raw[pos_mask]
+y_plot_win = 2 * mag_win[pos_mask]
 
 
 # --- 5. VISUALISIERUNG ---
@@ -247,7 +248,7 @@ fig.add_trace(
 )
 
 line_bottom = 1e-6 if use_log_scale else 0
-for f_target, a_target in zip([f1, f2], [a_sig1, a_sig2]):
+for f_target, a_target in zip([f1, f2], [a_sig1, a_sig2], strict=True):
     fig.add_shape(
         type="line",
         x0=f_target,
@@ -276,7 +277,7 @@ fig.update_xaxes(title_text="Zeit [s]", row=1, col=1)
 fig.update_xaxes(title_text="Frequenz [Hz]", range=[0, fs / 2], row=2, col=1)
 fig.update_yaxes(title_text=y_title, type=axis_type, range=y_range, row=2, col=1)
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig)
 
 # --- 6. INFO BOX ---
 st.info(f"""
