@@ -63,8 +63,8 @@ audio_file = st.file_uploader("Wählen Sie eine WAV-Datei", type=["wav"])
 if audio_file is not None:
     sampling_rate, audio_signal = load_and_normalize_audio(audio_file)
 else:
-    # Versuche handel.wav zu laden, sonst Synthetisch
-    default_path = Path(__file__).parent / "handel.wav"
+    # Versuche data/handel.wav zu laden, sonst Synthetisch
+    default_path = Path(__file__).parents[1] / "data" / "handel.wav"
     sampling_rate, audio_signal = load_and_normalize_audio(default_path)
 
 if (audio_signal is None) or (sampling_rate is None):
@@ -110,8 +110,8 @@ kernel_viz = None
 match filter_key:
     case "mittelwert":
         kernel = np.ones(window_len) / window_len
-        sig_filtered = signal.lfilter(kernel, 1, audio_signal)
-        # sig_filtered = signal.convolve(audio_signal, kernel, mode="same")
+        # mode="same": zentriert wie Savitzky-Golay, Median und FIR, ohne Verzögerung
+        sig_filtered = signal.convolve(audio_signal, kernel, mode="same")
         kernel_viz = kernel
     case "polynom":
         poly_order = 2
@@ -140,7 +140,7 @@ match filter_key:
         # Gauß Kernel
         kernel = signal.windows.gaussian(window_len, std=sigma)  # pyright: ignore
         kernel /= np.sum(kernel)
-        sig_filtered = signal.lfilter(kernel, 1, audio_signal)
+        sig_filtered = signal.convolve(audio_signal, kernel, mode="same")
         kernel_viz = kernel
     case "median":
         # Fensterlänge muss ungerade sein
@@ -193,7 +193,7 @@ match filter_key:
         cutoff_hz = st.sidebar.slider(
             "Cutoff (Hz)",
             min_value=100,
-            max_value=int(sampling_rate / 2),
+            max_value=int(sampling_rate / 2) - 1,  # firwin verlangt cutoff < fs/2
             value=2000,
         )
 
@@ -226,10 +226,9 @@ with tab1:
         cols=2,
         vertical_spacing=0.15,
         subplot_titles=(
-            "Zeitbereich (Zoom)",
-            "Frequenzbereich (Original)",
+            "Zeitbereich",
             "Filter Impulsantwort h(n)",
-            "Frequenzbereich (Gefiltert)",
+            "Frequenzbereich (Original und gefiltert)",
         ),
         specs=[[{"colspan": 2}, None], [{}, {}]],
     )
@@ -311,7 +310,7 @@ with tab1:
     fig.update_yaxes(type="log", title="Log Amp", row=2, col=2)
     fig.update_xaxes(title="Hz", row=2, col=2)
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig)
 
 with tab2:
 
