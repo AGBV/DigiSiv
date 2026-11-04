@@ -1,7 +1,6 @@
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
-import streamlit.components.v1 as components
 
 N = 10000
 
@@ -39,29 +38,18 @@ st.set_page_config(
     layout="wide",
 )
 st.title(title)
-st.write("https://github.com/AGBV/DigiSiV/tree/main/exercie06/MA2.py")
+st.write("https://github.com/AGBV/DigiSiV/tree/main/exercise06/MA2.py")
 
 with st.sidebar:
     form = st.form("params")
 
-    tau = form.slider(
-        "tau 2",
-        min_value=1e-2,
-        max_value=1e2,
-        value=1.0,
-        step=1.0,
-    )
+    # logarithmic steps, a linear slider from 0.01 to 100 cannot reach small values
+    log_values = [round(float(x), 2) for x in np.logspace(-2, 2, 17)]
+    tau = form.select_slider("tau", log_values, 1.0)
     form.divider()
 
     form.text("System 1")
-    omega_l1 = form.slider(
-        "omega",
-        min_value=1e-2,
-        max_value=1e2,
-        value=1.0,
-        step=1.0,
-        key="omega1",
-    )
+    omega_l1 = form.select_slider("omega", log_values, 1.0, key="omega1")
     t_1 = form.slider(
         "T",
         min_value=0.1,
@@ -76,14 +64,7 @@ with st.sidebar:
     form.divider()
 
     form.text("System 2")
-    omega_l2 = form.slider(
-        "omega",
-        min_value=1e-2,
-        max_value=1e2,
-        value=10.0,
-        step=1.0,
-        key="omega2",
-    )
+    omega_l2 = form.select_slider("omega", log_values, 10.0, key="omega2")
     t_2 = form.slider(
         "T",
         min_value=0.1,
@@ -140,7 +121,7 @@ fig.update_layout(
         type="log",
     ),
 )
-st.plotly_chart(fig, True)
+st.plotly_chart(fig)
 
 
 t_c, h_c = impulse_response_continuous(tau, np.max([n_1 * t_1, n_2 * t_2]))
@@ -178,10 +159,10 @@ fig.update_layout(
     title="Impulse Response",
     xaxis=dict(
         title="Time [s]",
-        range=[0, tau],
+        range=[0, 5 * tau],
     ),
     yaxis=dict(
         title="h",
     ),
 )
-st.plotly_chart(fig, True)
+st.plotly_chart(fig)
