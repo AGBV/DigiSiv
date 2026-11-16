@@ -36,6 +36,15 @@ def dft_matrix(signal):
     return 1 / N * np.exp(-1j * k * n * 2 * np.pi / N) @ signal.astype(np.complex128)
 
 
+st.markdown(
+    "This page uses the DFT convention of the lecture, with the factor $1/N$ in the "
+    "forward transform: "
+    "$X(k) = \\frac{1}{N} \\sum_{n=0}^{N-1} x(n)\\, e^{-j 2 \\pi k n / N}$. "
+    "`np.fft.fft` has no factor, so `np.fft.fft(x) / N` gives the same values. "
+    "Bin $k$ belongs to the frequency $f_k = k f_s / N$; "
+    "bins above $N/2$ are negative frequencies."
+)
+
 with st.sidebar:
     dft_method_name = st.selectbox(
         label="DFT method",
@@ -89,6 +98,9 @@ try:
 except ValueError:
     st.error("Please enter numbers separated by commas, one signal per line.")
     st.stop()
+if not signals:
+    st.info("Enter at least one signal.")
+    st.stop()
 # integer sample index times t_s, a float arange can produce one sample too many
 times = [np.arange(signal.size) * t_s for signal in signals]
 
@@ -113,6 +125,11 @@ st.plotly_chart(fig)
 spectra = [dft(signal) for signal in signals]
 benchmark = timeit(lambda: [dft(signal) for signal in signals], number=10) / 10
 st.write(f"DFT computation time using '{dft_method_name}': {benchmark * 1e3:.3f} ms")
+deviation = max(
+    np.max(np.abs(spectrum - np.fft.fft(signal) / signal.size))
+    for signal, spectrum in zip(signals, spectra, strict=True)
+)
+st.write(f"Largest deviation from `np.fft.fft(x) / N`: {deviation:.1e}")
 f_s = 1 / t_s
 frequencies = [np.arange(spectrum.size) * f_s / spectrum.size for spectrum in spectra]
 
